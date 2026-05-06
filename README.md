@@ -6,4 +6,4 @@ BSc (Hons) Final Year Project
 
 Joe Hudson (2370226 @ swansea.ac.uk)
 
-#CAI1: Laplace Solver
+# CAI1: Laplace Solver
