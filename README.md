@@ -11,6 +11,8 @@ Physics project designing a program that solves Laplace's equation numerically f
 
 # ACKNOWLEDGEMENTS
 PROJECT SUPERVISOR: Doctor Aled Isaac
+
 MODULE SUPERVISOR: Professor Sophie Shermer
+
 DISSERTATION MARKERS: Professor Christopher Allton and Doctor Sarah Roberts
 
