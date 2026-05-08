@@ -14,7 +14,7 @@ dim=3+2*RAD_GLOBAL
 elec_pot_1=0 #bottom electrode
 elec_pot_2=1.0 #top electrode
 converge_val=1e-5
-GLOBAL_CMAP='jet'
+GLOBAL_CMAP='Blues'
 step=5
 
 frame_directory=f'{idt} FRAME DIR'
@@ -70,8 +70,6 @@ t_a=time.time()
 
 while True:
     check,converge_val_n=converge_check(arr,dim,dim,converge_val)
-    a=int(abs(np.log10(converge_val)))
-    print(f'Step {i}, {100*round(converge_val/converge_val_n,a):.{a-2}f}% Convergence')    
     if check==True:
         t=round(time.time()-t_a, 10)
         plt.imshow(arr,cmap=GLOBAL_CMAP,origin='lower')
@@ -80,6 +78,8 @@ while True:
         print(f'\n{t}s\n{idt}')
         break
     elif i%step==0:
+        a=int(abs(np.log10(converge_val)))
+        print(f'Step {i}, {100*round(converge_val/converge_val_n,a):.{a-2}f}% Convergence')    
         plt.imshow(arr,cmap=GLOBAL_CMAP,origin='lower')
         plt.title(f'radius: {RAD_GLOBAL}\nframe {i//step} (i={i})\n{100*round(converge_val/converge_val_n,a):.{4}f}% convergence',fontsize=7,loc='left')
         plt.savefig(f'{frame_directory}/{i}.png')
@@ -104,5 +104,5 @@ print(f'{duration} frames\n{idt}')
 
 print(len(frames))
 
-imageio.mimsave(f'SEMICIRCULAR NUMERICAL SOLUTION {idt} {len(frames)} FRAMES.gif',frames,duration=0.01,loop=0)
+imageio.mimsave(f'SEMICIRCULAR NUMERICAL SOLUTION {idt} {len(frames)} FRAMES.gif',frames,duration=0.001,loop=0)
 shutil.rmtree(frame_directory)

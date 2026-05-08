@@ -10,17 +10,17 @@ np.set_printoptions(precision=9)
 idt=np.random.randint(1,999) #file-handling number
 
 v1=1.0
-RADIUS_ZERO=30
+RADIUS_ZERO=20
 Z_ZERO=3*RADIUS_ZERO
 dim_r=RADIUS_ZERO
 dim_z=Z_ZERO
 N=300
-GLOBAL_CMAP='jet'
+GLOBAL_CMAP='Blues'
 z1=RADIUS_ZERO
 z2=2*RADIUS_ZERO
 array_r=RADIUS_ZERO
 array_z=Z_ZERO
-converge_val=1e-5 # upper limit for the numerical solution to be considered "solved", i.e. subsequent arrays do not differ by this amount
+converge_val=1e-6 # upper limit for the numerical solution to be considered "solved", i.e. subsequent arrays do not differ by this amount
 step=5
 
 frame_directory=f'{idt} FRAME DIR'
@@ -64,9 +64,7 @@ i=1
 t_a=time.time()
 
 while True:
-    check,converge_val_n=converge_check(arr,array_r,array_z,converge_val)
-    a=int(abs(np.log10(converge_val)))
-    print(f'Step {i}, {100*round(converge_val/converge_val_n,a):.{a-2}f}% Convergence')    
+    check,converge_val_n=converge_check(arr,array_r,array_z,converge_val)    
     if check==True:
         t=round(time.time()-t_a, 10)
         plt.imshow(arr,cmap=GLOBAL_CMAP,origin='lower')
@@ -75,6 +73,8 @@ while True:
         print(f'\n{t}s\n{idt}')
         break
     elif i%step==0:
+        a=int(abs(np.log10(converge_val)))
+        print(f'Step {i}, {100*round(converge_val/converge_val_n,a):.{a-2}f}% Convergence')
         plt.imshow(arr,cmap=GLOBAL_CMAP,origin='lower')
         plt.title(f'radius: {RADIUS_ZERO}\nframe {i//step} (i={i})\n{100*round(converge_val/converge_val_n,a):.{4}f}% convergence',fontsize=7,loc='left')
         plt.savefig(f'{frame_directory}/{i}.png')
@@ -99,5 +99,5 @@ print(f'{duration} frames\n{idt}')
 
 print(len(frames))
 
-imageio.mimsave(f'SIMPLE PENNING SOLUTION {idt} {len(frames)} FRAMES.gif',frames,duration=0.01,loop=0)
+imageio.mimsave(f'SIMPLE PENNING SOLUTION {idt} {len(frames)} FRAMES.gif',frames,duration=0.001,loop=0)
 shutil.rmtree(frame_directory)
