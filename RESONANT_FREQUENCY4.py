@@ -54,8 +54,14 @@ def numerical_frequency(ident,well_pot):
     # plt.savefig(f'{volt_arr} potential well {well_pot}V {min(well_z)} {max(well_z)}.png')
     # plt.show()
 
+    # plt.scatter(well_z,well_V)
+    # plt.show()
+
     well_z_int=np.linspace(min(well_z),max(well_z),100)
     well_V_int=np.interp(well_z_int,well_z,well_V)
+
+    # plt.scatter(well_z_int,well_V_int)
+    # plt.show()
 
     const_coefficient=2*scipy.constants.elementary_charge/scipy.constants.electron_mass #Coulombs per kg
     
@@ -77,8 +83,8 @@ def numerical_frequency(ident,well_pot):
 a=np.linspace(32,33,2+4)
 y_exp=[8.52,8.78,8.97,9.13,9.24,9.18,9.55]
 
-#idt: 50,79,57, 20, 39, 88, 90
-#vlt: 80,90,100,110,120,130,140
+# idt: 50,79,57, 20, 39, 88, 90
+# vlt: 80,90,100,110,120,130,140
 
 for j in a:
     print(f'\nWELL POTENTIAL: {j}V')
@@ -90,11 +96,13 @@ for j in a:
     plt.plot(x,y,label=f'Numerical, {j}V',linestyle='--')
     plt.scatter(x,y,marker='x')
 
+trans_bool=True
+
 plt.scatter(x,y_exp,label='beamline',marker='x',color='black',s=60)
-plt.title(f'AXIAL BOUNCE FREQUENCIES',loc='left')
-plt.xlabel('Gate voltage, V')
-plt.ylabel('Axial bounce frequency, MRad/s')
+plt.title(f'AXIAL BOUNCE FREQUENCIES',loc='left',fontname='Times New Roman')
+plt.xlabel('Gate voltage, V',fontname='Times New Roman')
+plt.ylabel('Axial bounce frequency, MRad/s',fontname='Times New Roman')
 plt.ylim(0,max(max(y),max(y_exp))+2)
-plt.legend(loc='lower right',fontsize=7)
-# plt.savefig('NUMERCICAL BOUNCE FREQUENCY PLOT.png')
+plt.legend(loc='lower right',prop={'family':'Times New Roman','size':9})
+# plt.savefig(f'NUMERICAL BOUNCE FREQUENCY PLOT {trans_bool}.png',dpi=600,transparent=trans_bool)
 plt.show()

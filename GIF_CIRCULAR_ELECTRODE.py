@@ -14,7 +14,7 @@ dim=3+2*RAD_GLOBAL
 elec_pot_1=0 #bottom electrode
 elec_pot_2=1.0 #top electrode
 converge_val=1e-5
-GLOBAL_CMAP='Blues'
+GLOBAL_CMAP='jet'
 step=5
 
 frame_directory=f'{idt} FRAME DIR'

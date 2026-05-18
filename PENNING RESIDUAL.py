@@ -31,7 +31,7 @@ def potential_sum(rad_n,zed_n):
         exp_V+=(v1/np.pi)*alpha_n*(1/n)*(i0(2*np.pi*n*rad_n/Z_ZERO)/i0(2*np.pi*n*RADIUS_ZERO/Z_ZERO))*np.cos(2*np.pi*n*zed_n/Z_ZERO)
     return exp_V
 
-v1=100.0
+v1=100
 RADIUS_ZERO=20
 Z_ZERO=3*RADIUS_ZERO
 dim_r=RADIUS_ZERO
@@ -42,7 +42,7 @@ z1=RADIUS_ZERO
 z2=2*RADIUS_ZERO
 array_r=RADIUS_ZERO
 array_z=Z_ZERO
-converge_val=1e-6 # upper limit for the numerical solution to be considered "solved", i.e. subsequent arrays do not differ by this amount
+converge_val=1e-5 # upper limit for the numerical solution to be considered "solved", i.e. subsequent arrays do not differ by this amount
 
 init_array=np.full([array_r,array_z], v1) # creates array and initialises all values as v1
 
@@ -66,8 +66,9 @@ while True:
         plt.xlabel(f'z')
         plt.ylabel(f'r')
         plt.title(f'SIMPLE PENNING, NUMERICAL SOLUTION\n{RADIUS_ZERO}x{Z_ZERO}\n{v1}V -> GROUND\nConvergence of {converge_val} found in {i} steps, {t}s',loc='left',fontsize=7)
-        # plt.savefig(f'{idt} NUMERICAL SIMPLE PENNING {v1}V {RADIUS_ZERO}.png')
+        # plt.savefig(f'{idt} NUMERICAL SIMPLE PENNING {v1}V {RADIUS_ZERO}.png',dpi=600,transparent=True)
         plt.show()
+        print(f'\n{t}')#s')
         break
     else:
         arr=fin_diff_cylindrical(arr,array_r,array_z)
@@ -78,18 +79,17 @@ arr2=np.full([dim_r,dim_z],0.0)
 for i in range(0,dim_r):
     for j in range(0,dim_z):
         s=potential_sum(i,j)
-        # print(i,j,s)
         arr2[i,j]=s
 
-print(v1)
-print(RADIUS_ZERO)
+# print(v1)
+# print(RADIUS_ZERO)
 
 plt.imshow(arr2,cmap=GLOBAL_CMAP,origin='lower')
 plt.xlabel(f'z')
 plt.ylabel(f'r')
 plt.colorbar()
 plt.title(f'SIMPLE PENNING TRAP, ANALYTIC SOLUTION\nn={N}, {RADIUS_ZERO}x{Z_ZERO},\n{v1}V -> GROUND',loc='left',fontsize=7)
-# plt.savefig(f'{idt} ANALYTIC SIMPLE PENNING {v1}V {RADIUS_ZERO}.png')
+# plt.savefig(f'{idt} ANALYTIC SIMPLE PENNING {v1}V {RADIUS_ZERO}.png',dpi=600,transparent=True)
 plt.show()
 
 plt.imshow(arr2-arr,cmap=GLOBAL_CMAP,origin='lower')
@@ -97,29 +97,28 @@ plt.xlabel(f'z')
 plt.ylabel(f'r')
 plt.colorbar()
 avg=np.average(arr2-arr)
-plt.title(f'SIMPLE PENNING TRAP, RESIDUAL\nn={N}, {RADIUS_ZERO}x{Z_ZERO},\n{v1}V -> GROUND\nAverage: {avg}',loc='left',fontsize=7)
-# plt.savefig(f'{idt} RESIDUAL SIMPLE PENNING {v1}V {RADIUS_ZERO}.png')
-plt.show()
 print(avg)
+plt.title(f'SIMPLE PENNING TRAP, RESIDUAL\nn={N}, {RADIUS_ZERO}x{Z_ZERO},\n{v1}V -> GROUND\nAverage: {avg}',loc='left',fontsize=7)
+# plt.savefig(f'{idt} RESIDUAL SIMPLE PENNING {v1}V {RADIUS_ZERO}.png',dpi=600,transparent=True)
+plt.show()
 
-# plt.imshow(np.abs(arr2-arr),cmap=GLOBAL_CMAP,origin='lower')
-# plt.xlabel(f'z')
-# plt.ylabel(f'r')
-# plt.colorbar()
-# avg=np.average(np.abs(arr2-arr))
-# plt.title(f'SIMPLE PENNING TRAP, ABSOLUTE RESIDUAL\nn={N}, {RADIUS_ZERO}x{Z_ZERO},\n{v1}V -> GROUND\nAverage: {avg}',loc='left',fontsize=7)
-# # plt.savefig(f'{idt} ABSOLUTE RESIDUAL SIMPLE PENNING {v1}V {RADIUS_ZERO}.png')
-# plt.show()
-# print(avg)
-
-plt.imshow(100*(arr2-arr)/arr,cmap=GLOBAL_CMAP,origin='lower')
+plt.imshow(np.abs(arr2-arr),cmap=GLOBAL_CMAP,origin='lower')
 plt.xlabel(f'z')
 plt.ylabel(f'r')
 plt.colorbar()
-avg=np.average(100*(arr2-arr)/arr)
-plt.title(f'SIMPLE PENNING TRAP, RESIDUAL PERCENTAGE ERROR\nn={N}, {RADIUS_ZERO}x{Z_ZERO},\n{v1}V -> GROUND\nAverage: {avg}',loc='left',fontsize=7)
+avg=np.average(np.abs(arr2-arr))
+plt.title(f'SIMPLE PENNING TRAP, ABSOLUTE RESIDUAL\nn={N}, {RADIUS_ZERO}x{Z_ZERO},\n{v1}V -> GROUND\nAverage: {avg}',loc='left',fontsize=7)
 # plt.savefig(f'{idt} ABSOLUTE RESIDUAL SIMPLE PENNING {v1}V {RADIUS_ZERO}.png')
 plt.show()
-# print(avg)
+print(avg)
 
-print(f'\n{idt}')
+plt.imshow(100*np.abs((arr2-arr)/arr2),cmap=GLOBAL_CMAP,origin='lower')
+plt.xlabel(f'z')
+plt.ylabel(f'r')
+plt.colorbar()
+avg=np.average(100*np.abs((arr2-arr)/arr2))
+plt.title(f'SIMPLE PENNING TRAP, RESIDUAL PERCENTAGE ERROR\nn={N}, {RADIUS_ZERO}x{Z_ZERO},\n{v1}V -> GROUND\nAverage: {avg}%',loc='left',fontsize=7)
+# plt.savefig(f'{idt} RESIDUAL ERROR SIMPLE PENNING {v1}V {RADIUS_ZERO}.png',dpi=600,transparent=True)
+plt.show()
+print(f'{avg}')#%')
+print(f'\n{RADIUS_ZERO}\n{idt}')

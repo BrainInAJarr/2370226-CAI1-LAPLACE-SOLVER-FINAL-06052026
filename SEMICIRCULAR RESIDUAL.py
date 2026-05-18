@@ -6,7 +6,7 @@ np.set_printoptions(precision=9)
 idt=np.random.randint(1,99) #file-handling number, no relevance to main program
 
 N=1001
-RAD_GLOBAL=25
+RAD_GLOBAL=50
 dim=3+2*RAD_GLOBAL
 elec_pot_1=0 #bottom electrode
 elec_pot_2=1.0 #top electrode
@@ -71,7 +71,8 @@ def potential_avg(inp_arr):
     avg_i=0
     for i in range(dim):
         for j in range(dim):
-            if np.isnan(inp_arr[i,j])==False:    
+            if np.isnan(inp_arr[i,j])==False:
+            # if np.isnan(inp_arr[i,j])==False and np.sqrt((i-dim//2)**2+(j-dim//2)**2)<RAD_GLOBAL-1:    
                 avg_sum+=inp_arr[i,j]
                 avg_i+=1
     return avg_sum/avg_i
@@ -94,9 +95,9 @@ while True:
         plt.xlabel(f'x')
         plt.ylabel(f'y')
         plt.title(f'SEMICIRCULAR ELECTRODES, NUMERICAL SOLUTION\n{dim}x{dim}, Radius: {RAD_GLOBAL}\n{elec_pot_2}V -> GROUND\nConvergence of {converge_val} found in {i} steps, {t}s',loc='left',fontsize=7)
-        # plt.savefig(f'{idt} SIMULATED SEMICIRCULAR ELECTRODES {elec_pot_2}V {RAD_GLOBAL}.png')
+        # plt.savefig(f'{idt} SIMULATED SEMICIRCULAR ELECTRODES {elec_pot_2}V {RAD_GLOBAL}.png',dpi=600,transparent=True)
         plt.show()
-        print(f'\n{t}s')
+        print(f'\n{t}')#s')
         break
     else:
         arr=fin_diff_circ(arr,dim,dim)
@@ -116,45 +117,45 @@ for i in range(0,dim):
         else:
             pot_arr[i,j]=potential_sum(rad,the,N)
 
-print(elec_pot_2)
-print(RAD_GLOBAL)
+# print(elec_pot_2)
+# print(RAD_GLOBAL)
 
 plt.imshow(pot_arr,cmap=GLOBAL_CMAP,origin='lower')
 plt.colorbar()
 plt.xlabel(f'x')
 plt.ylabel(f'y')
 plt.title(f'SEMICIRCULAR ELECTRODES, ANALYTIC SOLUTION\nn={N}, Radius: {RAD_GLOBAL}, {dim}x{dim}\n{elec_pot_2}V -> GROUND',loc='left',fontsize=7)
-# plt.savefig(f'{idt} ANALYTIC SEMICIRCULAR ELECTRODES {elec_pot_2}V {RAD_GLOBAL}.png')
+# plt.savefig(f'{idt} ANALYTIC SEMICIRCULAR ELECTRODES {elec_pot_2}V {RAD_GLOBAL}.png',dpi=600,transparent=True)
 plt.show()
 
-plt.imshow(arr-pot_arr,cmap=GLOBAL_CMAP,origin='lower')
+plt.imshow(pot_arr-arr,cmap=GLOBAL_CMAP,origin='lower')
 plt.colorbar()
 plt.xlabel(f'x')
 plt.ylabel(f'y')
-avg=potential_avg(arr-pot_arr)
+avg=potential_avg(pot_arr-arr)
 print(avg)
 plt.title(f'SEMICIRCULAR ELECTRODES, RESIDUAL\n{dim}x{dim}, Radius: {RAD_GLOBAL}\n{elec_pot_2}V -> GROUND\nAverage: {avg}',loc='left',fontsize=7)
-# plt.savefig(f'{idt} RESIDUAL SEMICIRCULAR ELECTRODES {elec_pot_2}V {RAD_GLOBAL}.png')
+# plt.savefig(f'{idt} RESIDUAL SEMICIRCULAR ELECTRODES {elec_pot_2}V {RAD_GLOBAL}.png',dpi=600,transparent=True)
 plt.show()
 
-# plt.imshow(np.abs(arr-pot_arr),cmap=GLOBAL_CMAP,origin='lower')
-# plt.colorbar()
-# plt.xlabel(f'x')
-# plt.ylabel(f'y')
-# avg=potential_avg(np.abs(arr-pot_arr))
-# print(avg)
-# plt.title(f'SEMICIRCULAR ELECTRODES, ABSOLUTE RESIDUAL\n{dim}x{dim}, Radius: {RAD_GLOBAL}\n{elec_pot_2}V -> GROUND\nAverage: {avg}',loc='left',fontsize=7)
-# # plt.savefig(f'{idt} ABSOLUTE RESIDUAL SEMICIRCULAR ELECTRODES {elec_pot_2}V {RAD_GLOBAL}.png')
-# plt.show()
+plt.imshow(np.abs(arr-pot_arr),cmap=GLOBAL_CMAP,origin='lower')
+plt.colorbar()
+plt.xlabel(f'x')
+plt.ylabel(f'y')
+avg=potential_avg(np.abs(arr-pot_arr))
+print(avg)
+plt.title(f'SEMICIRCULAR ELECTRODES, ABSOLUTE RESIDUAL\n{dim}x{dim}, Radius: {RAD_GLOBAL}\n{elec_pot_2}V -> GROUND\nAverage: {avg}',loc='left',fontsize=7)
+# plt.savefig(f'{idt} ABSOLUTE RESIDUAL SEMICIRCULAR ELECTRODES {elec_pot_2}V {RAD_GLOBAL}.png')
+plt.show()
 
-plt.imshow(100*(pot_arr-arr)/arr,cmap=GLOBAL_CMAP,origin='lower')
+plt.imshow(100*(np.abs((pot_arr-arr)/pot_arr)),cmap=GLOBAL_CMAP,origin='lower')
 plt.xlabel(f'z')
 plt.ylabel(f'r')
 plt.colorbar()
-avg=np.average(100*(pot_arr-arr)/arr)
-plt.title(f'SEMICIRCULAR ELECTRODES, RESIDUAL PERCENTAGE ERROR\n{dim}x{dim}, Radius: {RAD_GLOBAL}\n{elec_pot_2}V -> GROUND\nAverage: {avg}',loc='left',fontsize=7)
-# plt.savefig(f'{idt} ABSOLUTE RESIDUAL SIMPLE PENNING {v1}V {RADIUS_ZERO}.png')
+avg=potential_avg(100*np.abs((pot_arr-arr)/pot_arr))
+plt.title(f'SEMICIRCULAR ELECTRODES, RESIDUAL PERCENTAGE ERROR\n{dim}x{dim}, Radius: {RAD_GLOBAL}\n{elec_pot_2}V -> GROUND\nAverage: {avg}%',loc='left',fontsize=7)
+# plt.savefig(f'{idt} RESIDUAL ERROR SEMICIRCULAR ELECTRODES {elec_pot_2}V {RAD_GLOBAL}.png',dpi=600,transparent=True)
 plt.show()
-# print(avg)
 
-print(f'\n{idt}')
+print(f'{avg}')#%')
+print(f'\n{RAD_GLOBAL}\n{idt}')
