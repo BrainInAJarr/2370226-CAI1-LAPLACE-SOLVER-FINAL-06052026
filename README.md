@@ -1,5 +1,7 @@
 # 2370226-CAI1-LAPLACE-SOLVER-FINAL-06052026
 
+![](https://github.com/BrainInAJarr/2370226-CAI1-LAPLACE-SOLVER-FINAL-06052026/blob/main/SIMPLE%20PENNING%20SOLUTION%20320%20653%20FRAMES.gif)
+
 Swansea University Department of Physics 
 
 BSc (Hons) Final Year Project
